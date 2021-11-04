@@ -30,17 +30,18 @@ def update_profile(request):
         form = ProfileForm(request.POST, request.FILES)
         if form.is_valid():
             data = form.cleaned_data
-            import ipdb; ipdb.set_trace()
             profile.website = data['website']
             profile.phone_number = data['phone_number']
             profile.biography = data['biography']
-            profile.picture = data['picture']
+            if data['picture'] is None:
+                profile.picture = request.user.profile.picture
+            else:
+                profile.picture = data['picture']
             profile.save()
             url = reverse(
                 'users:detail',
                 kwargs={'username': request.user.username}
                 )
-
             return redirect(url)
 
     else:
