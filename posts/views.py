@@ -49,7 +49,7 @@ class PostFeedView(LoginRequiredMixin, ListView):
 
     template_name = 'posts/feed.html'
     queryset = Post.objects.all().order_by('-created')
-    paginate_by = 10
+    paginate_by = 1
     context_object_name = 'posts'
 
 
