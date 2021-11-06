@@ -1,6 +1,9 @@
 from django.contrib.auth import login
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+import posts
 
 from posts.forms import PostForm
 from posts.models import Post
@@ -41,10 +44,31 @@ from datetime import datetime
 # ]
 
 
-@login_required
-def list_posts(request):
-    posts = Post.objects.all().order_by('-created')
-    return render(request, 'posts/feed.html', {'posts': posts})
+class PostFeedView(LoginRequiredMixin, ListView):
+    """Return all published posts"""
+
+    template_name = 'posts/feed.html'
+    queryset = Post.objects.all().order_by('-created')
+    paginate_by = 10
+    context_object_name = 'posts'
+
+
+class PostDetailView(LoginRequiredMixin, DetailView):
+    """Shows detail's post"""
+
+    context_object_name = 'post'
+    model = Post
+    queryset = Post.objects.all()
+    slug_field = posts
+    slug_url_kwarg = posts
+    template_name = 'posts/detail.html'
+
+
+
+# @login_required
+# def list_posts(request):
+#     posts = Post.objects.all().order_by('-created')
+#     return render(request, 'posts/feed.html', {'posts': posts})
 
 
 @login_required

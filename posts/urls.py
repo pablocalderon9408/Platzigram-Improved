@@ -10,11 +10,16 @@ urlpatterns = [
 
     path(
         route='',
-        view= views.list_posts,
+        view=views.PostFeedView.as_view(),
         name='Feed'),
-        
+
     path(
         route='posts/new',
-        view = views.create_post,
+        view=views.create_post,
         name='create'),
+
+    path(
+        route='posts/<int:pk>/',
+        view=views.PostDetailView.as_view(),
+        name='post_detail'),
 ]
