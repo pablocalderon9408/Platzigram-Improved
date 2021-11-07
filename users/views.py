@@ -8,6 +8,7 @@ from django.urls.base import reverse_lazy
 from django.views.generic import DetailView, FormView
 
 # Models
+from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
 from django.views.generic.edit import UpdateView
 from posts.models import Post
@@ -87,22 +88,28 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 #         }
 #     )
 
-
-def login_view(request):
+class Signin(LoginView):
     """Login view"""
-    if request.method == "POST":
-        print('*'*10)
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        print(username, ":", password)
-        if user:
-            login(request, user)
-            return redirect('posts:Feed')
-        else:
-            return render(request, 'users/login.html',
-                          {'error': 'Invalid username or password'})
-    return render(request, 'users/login.html')
+
+    template_name = 'users/login.html'
+    success_url = reverse_lazy('posts:Feed')
+
+
+# def login_view(request):
+#     """Login view"""
+#     if request.method == "POST":
+#         print('*'*10)
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(request, username=username, password=password)
+#         print(username, ":", password)
+#         if user:
+#             login(request, user)
+#             return redirect('posts:Feed')
+#         else:
+#             return render(request, 'users/login.html',
+#                           {'error': 'Invalid username or password'})
+#     return render(request, 'users/login.html')
 
 
 class SignupView(FormView):

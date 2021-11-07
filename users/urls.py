@@ -12,7 +12,7 @@ urlpatterns = [
     # Management
     path(
         route='login/',
-        view=views.login_view,
+        view=views.Signin.as_view(),
         name='login'),
     path(
         route='logout/',
