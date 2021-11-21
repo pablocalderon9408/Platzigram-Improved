@@ -8,7 +8,7 @@ from django.urls.base import reverse_lazy
 from django.views.generic import DetailView, FormView
 
 # Models
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.models import User
 from django.views.generic.edit import UpdateView
 from posts.models import Post
@@ -48,6 +48,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         """Return to user's profile"""
+        import ipdb; ipdb.set_trace()
         username = self.object.user.username
         return reverse('users:detail', kwargs={'username': username})
 
@@ -140,7 +141,13 @@ class SignupView(FormView):
 #     )
 
 
-@login_required
-def logout_view(request):
-    logout(request)
-    return redirect('users:login')
+class Logout(LogoutView):
+    """Logout view"""
+
+    template_name = 'users/login.html'
+
+
+# @login_required
+# def logout_view(request):
+#     logout(request)
+#     return redirect('users:login')
