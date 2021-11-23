@@ -32,6 +32,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         user = self.get_object()
         context['posts'] = Post.objects.filter(user=user).order_by('-created')
+        import ipdb; ipdb.set_trace()
         return context
 
 
@@ -44,6 +45,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 
     def get_object(self):
         """Return user's profile"""
+        import ipdb; ipdb.set_trace()
         return self.request.user.profile
 
     def get_success_url(self):
